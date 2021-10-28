@@ -41,15 +41,15 @@ export default {
     analizarImporteTotal() {
     
       let color = '#008000'
-      if(this.importeTotal <= this.formData.presupuesto){
-        color ='#ff0000'
-      }
+      
       if(this.importeTotal >1000 && this.importeTotal <5000) {
         color = '#ff00ff'
       }
       if(this.importeTotal > 5000) {color = '#ffa500'
       }
-      
+      if(this.importeTotal <= this.formData.presupuesto){
+        color ='#ff0000'
+      }
       return {
         valor : this.importeTotal,
         color
