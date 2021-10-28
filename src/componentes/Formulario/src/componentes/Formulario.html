@@ -1,0 +1,77 @@
+
+<section class="src-componentes-formulario">
+  <div class="jumbotron">
+    <h1>Ingreso de Gastos</h1>
+    <hr>
+
+    <vue-form :state="formstate" @submit.prevent="enviar()">
+      
+      <validate tag="div">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" v-model.trim="formData.nombre" required name="nombre" autocomplete="off" class="form-control" :minlength="nombreMinLength":maxlength="nombreMaxLength"
+        sin-espacios placeholder="Ingrese Nombre del cliente"/>
+  
+        <field-messages name="nombre" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Este campo es obligatorio</div>
+          <div slot="sin-espacios" class="alert alert-danger mt-1">No se permiten espacios intermedios en este campo.</div>
+          <div slot="minlength" class="alert alert-danger mt-1"> Este campo debe poseer al menos {{ nombreMinLength }} caracteres </div>
+          <div v-if="formData.nombre.length == nombreMaxLength" class="alert alert-danger mt-1"> Este campo debe poseer como máximo {{ nombreMaxLength }} caracteres </div>
+        </field-messages>
+      </validate>
+      <br>
+
+      <validate tag="div">
+        <label for="descrip">Descripcion</label>
+        <input type="text" id="descrip" v-model="formData.descrip" required name="descrip" autocomplete="off" class="form-control" placeholder="Ingrese Descripcion del gasto" />
+  
+        <field-messages name="descrip" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Este campo es obligatorio</div>
+        </field-messages>
+      </validate>
+      <br>
+
+      <validate tag="div">
+        <label for="importe">Importe</label>
+        <input type="number" id="importe" v-model.number="formData.importe" required name="importe" autocomplete="off" class="form-control" />
+  
+        <field-messages name="importe" show="$dirty">
+          <div slot="required" class="alert alert-danger mt-1">Este campo es obligatorio</div>
+        </field-messages>
+      </validate>
+
+      <br>
+
+      <button class="btn btn-success my-3" :disabled="formstate.$invalid" type="submit">Enviar</button>
+    </vue-form>
+    <br>
+    <hr>
+
+    <h2>Detalle de Gastos</h2>
+    <br>
+    <input type="number" id="presupuesto" v-model.number="formData.presupuesto" required name="presupuesto" autocomplete="off" class="form-control" placeholder="presupuesto"/>
+
+    <div v-if="importes.length" class="table-responsive">
+      <table class="table">
+        <tr>
+          <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Importe</th>
+          <th>Fecha</th>
+        </tr>
+        <tr v-for="(importe,index) in importes" :key="index" >
+          <td>{{ importe.nombre }}</td>
+          <td>{{ importe.descrip }}</td>
+          <td>$ {{ importe.importe }}</td>
+          <td>{{ importe.fecha }}</td>
+        </tr>
+        <tr class="total"  :style="{color: analizarImporteTotal().color }">
+          <td>total:</td>
+          <td>{{ analizarImporteTotal().valor }}</td> 
+        </tr>
+      </table>
+    </div>
+    <h4 v-else class="alert alert-info">No hay gastos ingresados</h4>
+
+  </div>
+</section>
+
